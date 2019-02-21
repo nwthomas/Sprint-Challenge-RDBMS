@@ -75,6 +75,26 @@ server.post("/api/projects", async (req, res) => {
   }
 });
 
+server.delete("/api/projects/:id", async (req, res) => {
+  try {
+    const project = await db("projects")
+      .where({ id: req.params.id })
+      .del();
+    if (project) {
+      res.status(200).json({
+        message: "Project was deleted successfully.",
+        numProjectsDeleted: project
+      });
+    } else {
+      res.status(404).json({ message: "The project could not be deleted." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "There was an error deleting the project.", error });
+  }
+});
+
 // =============================================== Actions
 
 server.get("/api/actions", async (req, res) => {
