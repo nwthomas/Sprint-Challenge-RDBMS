@@ -176,30 +176,53 @@ server.post("/api/actions", async (req, res) => {
   }
 });
 
+server.put("/api/actions/:id", async (req, res) => {
+  if (!req.body.description || !req.body.notes) {
+    return res.status(400).json({
+      message: "Please include a description and some notes and try again."
+    });
+  }
+  try {
+    const action = await db("actions")
+      .where({ id: req.params.id })
+      .update({ ...req.body });
+    if (action) {
+      res
+        .status(200)
+        .json({ message: "The action was update successfully.", action });
+    } else {
+      res
+        .status(404)
+        .json({ message: "The action could not be found to be updated." });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "There was an error while updating the action.",
+      error
+    });
+  }
+});
+
 server.delete("/api/actions/:id", async (req, res) => {
   try {
     const actions = await db("actions")
       .where({ id: req.params.id })
       .del();
     if (actions) {
-      res
-        .status(200)
-        .json({
-          message: "Action was deleted successfully",
-          numActionDeleted: actions
-        });
+      res.status(200).json({
+        message: "Action was deleted successfully",
+        numActionDeleted: actions
+      });
     } else {
       res
         .status(404)
         .json({ message: "The action could not be found to be deleted." });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "There was an error while trying to delete the action.",
-        error
-      });
+    res.status(500).json({
+      message: "There was an error while trying to delete the action.",
+      error
+    });
   }
 });
 
