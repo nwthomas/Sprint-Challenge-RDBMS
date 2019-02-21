@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.shema.createTable("projects", tbl => {
+  return knex.schema.createTable("projects", tbl => {
     tbl.increments("id");
     tbl.string("name", 128);
     tbl.string("description", 255);

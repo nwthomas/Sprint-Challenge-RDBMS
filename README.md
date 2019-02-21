@@ -29,9 +29,20 @@ This will be akin to the Web API that you built in the last sprint, only this ti
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. Explain the difference between `RDBMS` and `SQL`.
-1. Why do tables need a `primary key`?
-1. What is the name given to a table column that references the primary key on another table.
-1. What do we need in order to have a _many to many_ relationship between two tables.
+
+A `RDBMS`, or `Relational Database Management System`, is a collection of different software programs and processes that allow Database Administrators to manage a company's data. Relational, in this sense, is a mathematical concept that is equivalent to the tables that we use in a RDBMS. In contrast, SQL is a language that we use to write queries inside of our RDBMS in order to retrieve data from it.
+
+2. Why do tables need a `primary key`?
+
+A primary key is a column of numbers that is purely unique to that table. It uniquely identifies each item in that database table row. It cannot have `null` values.
+
+3. What is the name given to a table column that references the primary key on another table.
+
+The name given to a table column that references the primary key on another table is a `foreign key.` This is used in knex or SQL queries to combine (or JOIN) different elements of the table together.
+
+4. What do we need in order to have a _many to many_ relationship between two tables.
+
+In order to have a many-to-many relationship between two tables, we must create a third table in our RDBMS that allows us to combine different foreign keys together to tie the many-to-many relationships together. These rows may themselves have a primary key of their own, but they always have two foreign keys - one for each of the tables that we are linking together.
 
 ## Project Set Up
 
@@ -69,8 +80,8 @@ Feel free to name the tables and fields anything you want. **Add relationships**
 
 ### Tasks
 
-- [ ] Build the database and tables using knex migrations. **Seeding is not needed**.
-- [ ] Build the API with the following endpoints:
+- [x] Build the database and tables using knex migrations. **Seeding is not needed**.
+- [x] Build the API with the following endpoints:
 
   - [ ] POST for adding projects.
   - [ ] POST for adding actions.
