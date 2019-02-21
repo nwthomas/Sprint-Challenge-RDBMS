@@ -75,6 +75,31 @@ server.post("/api/projects", async (req, res) => {
   }
 });
 
+server.put("/api/projects/:id", async (req, res) => {
+  if (!req.body.name || !req.body.description) {
+    return res.status(400).json({
+      message:
+        "Please include a name and description and try updating the project again."
+    });
+  }
+  try {
+    const project = await db("projects")
+      .where({ id: req.params.id })
+      .update({ ...req.body });
+    if (project) {
+      res.status(200).json(project);
+    } else {
+      res
+        .status(404)
+        .json({ message: "The project could not be found to be updated." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "There was an error while updating the project" });
+  }
+});
+
 server.delete("/api/projects/:id", async (req, res) => {
   try {
     const project = await db("projects")
