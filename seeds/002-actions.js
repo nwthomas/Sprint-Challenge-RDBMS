@@ -1,13 +1,22 @@
-
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+  return knex("actions")
+    .truncate()
+    .then(function() {
+      return knex("actions").insert([
+        {
+          name: "Put toothpaste on toothbrush",
+          description: "stuff here",
+          notes: "more stuff",
+          completed: false,
+          project_id: 2
+        },
+        {
+          name: "Brush teeth with toothbrush for at least 3 minutes",
+          description: "asdfrasdfasdfasdf",
+          notes: "asdfasdfasdfasdf",
+          completed: false,
+          project_id: 2
+        }
       ]);
     });
 };
