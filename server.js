@@ -15,6 +15,8 @@ server.get("/", (req, res) => {
   res.send("Dude!");
 });
 
+// =============================================== Projects
+
 server.get("/api/projects", async (req, res) => {
   try {
     const projects = await db("projects");
@@ -29,9 +31,11 @@ server.get("/api/projects", async (req, res) => {
 
 server.get("/api/projects/:id", async (req, res) => {
   try {
-    const project = await db("projects").where({ id: req.params.id });
-    if (project.length) {
-      res.status(200).json(project);
+    const projects = await db("projects").where({ id: req.params.id });
+    const actions = await db("actions").where({ project_id: req.params.id });
+    if (projects.length) {
+      const project = projects[0];
+      res.status(200).json({ ...project, actions });
     } else {
       res
         .status(404)
@@ -66,6 +70,58 @@ server.post("/api/projects", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "There was an error adding the project to the database.",
+      error
+    });
+  }
+});
+
+// =============================================== Actions
+
+server.get("/api/actions", async (req, res) => {
+  try {
+    const actions = await db("actions");
+    if (actions.length) {
+      res.status(200).json(actions);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No actions could be found in the database." });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "There was an error retriving the actions from the database.",
+      error
+    });
+  }
+});
+
+server.post("/api/actions", async (req, res) => {
+  if (
+    !req.body.name ||
+    !req.body.description ||
+    !req.body.notes ||
+    !req.body.project_id
+  ) {
+    return res.status(400).json({
+      message:
+        "Please include a name, description, project ID, and notes about the action, and try again."
+    });
+  }
+  try {
+    const action = await db("actions").insert(req.body);
+    if (action) {
+      res.status(200).json({
+        message: "The action was successfully created in the database.",
+        numActionCreated: action
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "The action could not be added to the database." });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "There was an error adding the action to the database.",
       error
     });
   }
